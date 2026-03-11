@@ -83,7 +83,7 @@ You can still deploy and use it. You can:
 7. **Mobile-Friendly** — Open on your phone for a quick status check on the go
 8. **Security Hardening** — Sidebar password protection, weak-password blocking in production, hardened session cookies
 9. **Flexible Public Access** — Use Cloudflare Tunnel for instant public access, or bring your own domain / reverse proxy
-10. **Desktop Pet Mode** — Optional Tauri desktop wrapper that turns the office into a transparent desktop widget (see below)
+10. **Desktop Pet Mode** — Optional Electron desktop wrapper that turns the office into a transparent desktop widget (see below)
 
 ---
 
@@ -215,7 +215,7 @@ Guests can also use `frontend/join-office-skill.md` as a Skill — their agent w
 
 ## 🖥 Desktop Pet Mode (Optional)
 
-The `desktop-pet/` directory contains a **Tauri**-based desktop wrapper that turns the pixel office into a transparent desktop widget.
+The `desktop-pet/` directory contains a **Electron**-based desktop wrapper that turns the pixel office into a transparent desktop widget.
 
 ```bash
 cd desktop-pet
@@ -276,7 +276,7 @@ Star-Office-UI/
 │   ├── join.html
 │   ├── invite.html
 │   └── layout.js
-├── desktop-pet/        # Tauri desktop wrapper (optional)
+├── desktop-pet/        # Electron desktop wrapper (optional)
 ├── docs/               # Documentation & screenshots
 │   └── screenshots/
 ├── office-agent-push.py  # Guest push script
