@@ -10,6 +10,7 @@ import os
 import random
 import math
 import re
+import sys
 import shutil
 import socket
 import subprocess
@@ -52,8 +53,19 @@ WORKSPACE_DIR = os.path.dirname(ROOT_DIR)
 OPENCLAW_WORKSPACE = os.environ.get("OPENCLAW_WORKSPACE") or os.path.join(os.path.expanduser("~"), ".openclaw", "workspace")
 # 当前工作区根目录（含本项目的 workspace 目录）下的 IDENTITY.md
 IDENTITY_FILE = os.path.join(WORKSPACE_DIR, "IDENTITY.md")
-GEMINI_SCRIPT = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", "scripts", "gemini_image_generate.py")
-GEMINI_PYTHON = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", ".venv", "bin", "python")
+GEMINI_SCRIPT_SKILL = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", "scripts", "gemini_image_generate.py")
+GEMINI_PYTHON_SKILL = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", ".venv", "bin", "python")
+# Fallback: use the project's own script + current Python (for local dev without separate venv)
+GEMINI_SCRIPT_LOCAL = os.path.join(ROOT_DIR, "scripts", "gemini_image_generate.py")
+GEMINI_PYTHON_LOCAL = sys.executable
+
+def _resolve_gemini_paths():
+    """Return (python_path, script_path). Prefer skill venv; fallback to local."""
+    if os.path.exists(GEMINI_PYTHON_SKILL) and os.path.exists(GEMINI_SCRIPT_SKILL):
+        return GEMINI_PYTHON_SKILL, GEMINI_SCRIPT_SKILL
+    if os.path.exists(GEMINI_SCRIPT_LOCAL):
+        return GEMINI_PYTHON_LOCAL, GEMINI_SCRIPT_LOCAL
+    return None, None
 ROOM_REFERENCE_IMAGE = (
     os.path.join(ROOT_DIR, "assets", "room-reference.webp")
     if os.path.exists(os.path.join(ROOT_DIR, "assets", "room-reference.webp"))
@@ -612,12 +624,16 @@ def _normalize_user_model(model_name: str) -> str:
         return low
     if low in PROVIDER_MODEL_TO_USER_MODEL:
         return PROVIDER_MODEL_TO_USER_MODEL[low]
-    return "nanobanana-pro"
+    # Unknown model name: pass through as-is (for custom proxy endpoints)
+    return m
 
 
 def _provider_model_candidates(user_model: str):
     normalized = _normalize_user_model(user_model)
-    return list(USER_MODEL_TO_PROVIDER_MODELS.get(normalized, USER_MODEL_TO_PROVIDER_MODELS["nanobanana-pro"]))
+    if normalized in USER_MODEL_TO_PROVIDER_MODELS:
+        return list(USER_MODEL_TO_PROVIDER_MODELS[normalized])
+    # Custom model name: use as-is (for custom proxy endpoints)
+    return [normalized]
 
 
 def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, height: int = 720, custom_prompt: str = "", speed_mode: str = "fast"):
@@ -643,7 +659,8 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
     ]
     theme = random.choice(themes)
 
-    if not (os.path.exists(GEMINI_PYTHON) and os.path.exists(GEMINI_SCRIPT)):
+    GEMINI_PYTHON, GEMINI_SCRIPT = _resolve_gemini_paths()
+    if not GEMINI_PYTHON or not GEMINI_SCRIPT:
         raise RuntimeError("生图脚本环境缺失：gemini-image-generate 未安装")
 
     style_hint = (custom_prompt or "").strip()
@@ -711,6 +728,12 @@ def _generate_rpg_background_to_webp(out_webp_path: str, width: int = 1280, heig
     # 运行时配置优先：只保留 GEMINI_API_KEY，避免脚本因双 key 报错
     env.pop("GOOGLE_API_KEY", None)
     env["GEMINI_API_KEY"] = api_key
+    # 自定义 API 端点（代理/中转网关）
+    base_url = (runtime_cfg.get("gemini_base_url") or "").strip()
+    if base_url:
+        env["GEMINI_BASE_URL"] = base_url
+    else:
+        env.pop("GEMINI_BASE_URL", None)
 
     def _run_cmd(cmd_args):
         return subprocess.run(cmd_args, capture_output=True, text=True, env=env, timeout=240)
@@ -1427,7 +1450,8 @@ def assets_generate_rpg_background():
         api_key = (runtime_cfg.get("gemini_api_key") or "").strip()
         if not api_key:
             return jsonify({"ok": False, "code": "MISSING_API_KEY", "msg": "Missing GEMINI_API_KEY or GOOGLE_API_KEY"}), 400
-        if not (os.path.exists(GEMINI_PYTHON) and os.path.exists(GEMINI_SCRIPT)):
+        gemini_py, gemini_sc = _resolve_gemini_paths()
+        if not gemini_py or not gemini_sc:
             return jsonify({"ok": False, "msg": "生图脚本环境缺失：gemini-image-generate 未安装"}), 500
 
         # Check if another generation is already running
@@ -1827,11 +1851,13 @@ def gemini_config_get():
         cfg = load_runtime_config()
         key = (cfg.get("gemini_api_key") or "").strip()
         masked = ("*" * max(0, len(key) - 4)) + key[-4:] if key else ""
+        base_url = (cfg.get("gemini_base_url") or "").strip()
         return jsonify({
             "ok": True,
             "has_api_key": bool(key),
             "api_key_masked": masked,
             "gemini_model": _normalize_user_model(cfg.get("gemini_model") or "nanobanana-pro"),
+            "gemini_base_url": base_url,
         })
     except Exception as e:
         return jsonify({"ok": False, "msg": str(e)}), 500
@@ -1846,7 +1872,8 @@ def gemini_config_set():
         data = request.get_json(silent=True) or {}
         api_key = (data.get("api_key") or "").strip()
         model = _normalize_user_model((data.get("model") or "").strip() or "nanobanana-pro")
-        payload = {"gemini_model": model}
+        base_url = (data.get("base_url") or "").strip()
+        payload = {"gemini_model": model, "gemini_base_url": base_url}
         if api_key:
             payload["gemini_api_key"] = api_key
         save_runtime_config(payload)

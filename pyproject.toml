@@ -6,4 +6,6 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "flask>=3.0.0",
+    "google-genai>=1.66.0",
+    "pillow>=12.1.1",
 ]
