@@ -1705,6 +1705,15 @@
                                     <input id="gemini-api-key-input" type="password" placeholder="粘贴 GEMINI_API_KEY（不会回显）" style="min-width:220px; flex:1;" autocomplete="new-password" />
                                     <button id="btn-save-gemini-key" onclick="saveGeminiConfigFromUI()">保存 Key</button>
                                 </div>
+                                <div id="gemini-model-status" class="asset-sub" style="margin-top:4px; margin-bottom:4px; color:#a7f3d0;"></div>
+                                <div class="asset-toolbar" style="gap:6px; flex-wrap:wrap; margin-top:4px;">
+                                    <input id="gemini-model-input" type="text" placeholder="模型名（如 gemini-2.5-flash-image）" style="min-width:220px; flex:1;" autocomplete="off" />
+                                </div>
+                                <div id="gemini-base-url-status" class="asset-sub" style="margin-top:4px; margin-bottom:4px; color:#a7f3d0;"></div>
+                                <div class="asset-toolbar" style="gap:6px; flex-wrap:wrap; margin-top:4px;">
+                                    <input id="gemini-base-url-input" type="text" placeholder="自定义 API 端点（留空使用官方地址）" style="min-width:220px; flex:1;" autocomplete="off" />
+                                    <button id="btn-save-gemini-base-url" onclick="saveGeminiConfigFromUI()">保存</button>
+                                </div>
                                 <div id="gemini-config-msg" class="asset-sub" style="margin-top:4px;"></div>
                             </div>
                         </details>
@@ -1786,7 +1795,7 @@
                 brokerDone: '✅ 已按中介方案生成并替换底图，正在刷新房间...',
                 moveSuccess: '✅ 搬家成功！',
                 brokerMissingKey: '❌ 生图失败：缺少 GEMINI API Key，请在下方填写并保存后重试',
-                geminiPanelTitle: '🔐 API 设置（可折叠）', geminiHint: '可选：填写你的生图 API Key（留空不影响基础功能）', geminiApiDoc: '📘 如何申请 Google API Key', geminiInputPh: '粘贴 GEMINI_API_KEY（不会回显）', geminiSaveKey: '保存 Key', geminiMaskNoKey: '当前状态：未配置 Key', geminiMaskHasKey: '当前已配置：',
+                geminiPanelTitle: '🔐 API 设置（可折叠）', geminiHint: '可选：填写你的生图 API Key（留空不影响基础功能）', geminiApiDoc: '📘 如何申请 Google API Key', geminiInputPh: '粘贴 GEMINI_API_KEY（不会回显）', geminiSaveKey: '保存 Key', geminiMaskNoKey: '当前状态：未配置 Key', geminiMaskHasKey: '当前已配置：', geminiBaseUrlPh: '自定义 API 端点（留空使用官方地址）', geminiBaseUrlSave: '保存', geminiBaseUrlStatus: '当前 Base URL：', geminiBaseUrlNone: '当前：使用官方 API 端点', geminiModelPh: '模型名（如 gemini-2.5-flash-image）', geminiModelStatus: '当前模型：',
                 speedModeLabel: '生成模式', speedFast: '🍌2', speedQuality: '🍌Pro',
                 searchPlaceholder: '搜索资产名（如 desk / sofa / star）', loaded: '已加载', allAssets: '全部资产',
                 chooseImage: '上传替换素材', confirmUpload: '确认并刷新', uploadPending: '待上传', uploadTarget: '目标',
@@ -1820,7 +1829,7 @@
                 brokerDone: '✅ Broker plan applied and background replaced, refreshing room...',
                 moveSuccess: '✅ Move successful!',
                 brokerMissingKey: '❌ Generation failed: missing GEMINI API key. Fill it below and retry.',
-                geminiPanelTitle: '🔐 API Settings (collapsible)', geminiHint: 'Optional: set your image API key (base features work without it)', geminiApiDoc: '📘 How to get a Google API Key', geminiInputPh: 'Paste GEMINI_API_KEY (input hidden)', geminiSaveKey: 'Save Key', geminiMaskNoKey: 'Current: no key configured', geminiMaskHasKey: 'Configured key:',
+                geminiPanelTitle: '🔐 API Settings (collapsible)', geminiHint: 'Optional: set your image API key (base features work without it)', geminiApiDoc: '📘 How to get a Google API Key', geminiInputPh: 'Paste GEMINI_API_KEY (input hidden)', geminiSaveKey: 'Save Key', geminiMaskNoKey: 'Current: no key configured', geminiMaskHasKey: 'Configured key:', geminiBaseUrlPh: 'Custom API endpoint (leave empty for official)', geminiBaseUrlSave: 'Save', geminiBaseUrlStatus: 'Current Base URL:', geminiBaseUrlNone: 'Current: using official API endpoint', geminiModelPh: 'Model name (e.g. gemini-2.5-flash-image)', geminiModelStatus: 'Current model:',
                 speedModeLabel: 'Render Mode', speedFast: '🍌2', speedQuality: '🍌Pro',
                 searchPlaceholder: 'Search assets (desk / sofa / star)', loaded: 'Loaded', allAssets: 'All Assets',
                 chooseImage: 'Upload Replacement Asset', confirmUpload: 'Confirm & Refresh', uploadPending: 'Pending Upload', uploadTarget: 'Target',
@@ -1854,7 +1863,7 @@
                 brokerDone: '✅ 仲介プランを適用して背景を更新しました。部屋を更新中...',
                 moveSuccess: '✅ 引っ越し成功！',
                 brokerMissingKey: '❌ 生成失敗：GEMINI APIキーが未設定です。下で入力して保存してください。',
-                geminiPanelTitle: '🔐 API設定（折りたたみ）', geminiHint: '任意：画像生成APIキーを設定（未設定でも基本機能は利用可）', geminiApiDoc: '📘 Google API Keyの取得方法', geminiInputPh: 'GEMINI_API_KEY を貼り付け（入力は非表示）', geminiSaveKey: 'Keyを保存', geminiMaskNoKey: '現在：キー未設定', geminiMaskHasKey: '設定済みキー：',
+                geminiPanelTitle: '🔐 API設定（折りたたみ）', geminiHint: '任意：画像生成APIキーを設定（未設定でも基本機能は利用可）', geminiApiDoc: '📘 Google API Keyの取得方法', geminiInputPh: 'GEMINI_API_KEY を貼り付け（入力は非表示）', geminiSaveKey: 'Keyを保存', geminiMaskNoKey: '現在：キー未設定', geminiMaskHasKey: '設定済みキー：', geminiBaseUrlPh: 'カスタムAPIエンドポイント（空欄で公式を使用）', geminiBaseUrlSave: '保存', geminiBaseUrlStatus: '現在のBase URL：', geminiBaseUrlNone: '現在：公式APIエンドポイントを使用', geminiModelPh: 'モデル名（例: gemini-2.5-flash-image）', geminiModelStatus: '現在のモデル：',
                 speedModeLabel: '生成モード', speedFast: '🍌2', speedQuality: '🍌Pro',
                 searchPlaceholder: 'アセット検索（desk / sofa / star）', loaded: '読み込み済み', allAssets: '全アセット',
                 chooseImage: '差し替え素材をアップロード', confirmUpload: '確定して更新', uploadPending: 'アップロード待ち', uploadTarget: '対象',
@@ -2026,6 +2035,9 @@
             const geminiDocLink = document.getElementById('gemini-api-doc-link'); if (geminiDocLink) geminiDocLink.textContent = t('geminiApiDoc');
             const geminiInput = document.getElementById('gemini-api-key-input'); if (geminiInput) geminiInput.placeholder = t('geminiInputPh');
             const geminiSaveBtn = document.getElementById('btn-save-gemini-key'); if (geminiSaveBtn) geminiSaveBtn.textContent = t('geminiSaveKey');
+            const geminiBaseUrlInput = document.getElementById('gemini-base-url-input'); if (geminiBaseUrlInput) geminiBaseUrlInput.placeholder = t('geminiBaseUrlPh');
+            const geminiBaseUrlSaveBtn = document.getElementById('btn-save-gemini-base-url'); if (geminiBaseUrlSaveBtn) geminiBaseUrlSaveBtn.textContent = t('geminiBaseUrlSave');
+            const geminiModelInput = document.getElementById('gemini-model-input'); if (geminiModelInput) geminiModelInput.placeholder = t('geminiModelPh');
 
             setPh('asset-search', 'searchPlaceholder');
 
@@ -3760,7 +3772,8 @@ function toggleBrokerPanel() {
                 if (data && data.ok) {
                     window.geminiConfig = {
                         hasKey: !!data.has_api_key,
-                        model: data.gemini_model || 'nanobanana-pro'
+                        model: data.gemini_model || 'nanobanana-pro',
+                        baseUrl: data.gemini_base_url || ''
                     };
                     const box = document.getElementById('asset-gemini-config');
                     if (box) box.style.display = 'block';
@@ -3770,23 +3783,36 @@ function toggleBrokerPanel() {
                             ? `${t('geminiMaskHasKey')} ${data.api_key_masked || ''}`
                             : t('geminiMaskNoKey');
                     }
+                    const bs = document.getElementById('gemini-base-url-status');
+                    if (bs) {
+                        bs.textContent = data.gemini_base_url
+                            ? `${t('geminiBaseUrlStatus')} ${data.gemini_base_url}`
+                            : t('geminiBaseUrlNone');
+                    }
+                    const ms2 = document.getElementById('gemini-model-status');
+                    if (ms2) {
+                        ms2.textContent = `${t('geminiModelStatus')} ${data.gemini_model || 'nanobanana-pro'}`;
+                    }
                 }
             } catch (e) {}
         }
 
         async function saveGeminiConfigFromUI() {
             const input = document.getElementById('gemini-api-key-input');
+            const baseUrlInput = document.getElementById('gemini-base-url-input');
             const msg = document.getElementById('gemini-config-msg');
             const key = (input?.value || '').trim();
-            if (!key) {
-                if (msg) msg.textContent = '请输入有效 API Key';
-                return;
-            }
+            const baseUrl = (baseUrlInput?.value || '').trim();
+            const modelInput = document.getElementById('gemini-model-input');
+            const modelVal = (modelInput?.value || '').trim();
             try {
+                const payload = { base_url: baseUrl };
+                if (key) payload.api_key = key;
+                payload.model = modelVal || 'nanobanana-pro';
                 const res = await fetch('/config/gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ api_key: key, model: 'nanobanana-pro' })
+                    body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (!data.ok) {
@@ -3794,8 +3820,8 @@ function toggleBrokerPanel() {
                     return;
                 }
                 if (msg) msg.textContent = '✅ 已保存，可重新点击搬家/中介';
-                const box = document.getElementById('asset-gemini-config');
-                if (box) box.style.display = 'none';
+                if (input) input.value = '';
+                if (baseUrlInput) baseUrlInput.value = '';
                 await ensureGeminiConfigLoaded();
             } catch (e) {
                 if (msg) msg.textContent = `保存失败：${e}`;

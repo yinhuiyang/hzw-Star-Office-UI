@@ -85,7 +85,11 @@ def main():
         sys.exit(1)
 
     # Initialize client
-    client = genai.Client(api_key=api_key)
+    client_kwargs = {"api_key": api_key}
+    base_url = os.environ.get("GEMINI_BASE_URL", "").strip()
+    if base_url:
+        client_kwargs["http_options"] = {"base_url": base_url}
+    client = genai.Client(**client_kwargs)
 
     # Build prompt parts
     contents = []
