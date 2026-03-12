@@ -72,6 +72,13 @@ const LAYOUT = {
       depth: 4
     },
 
+    // 休息区柜上的「等待区」标牌（柜正上方）
+    waitingSign: {
+      x: 220,
+      y: -125,
+      depth: 4
+    },
+
     // 咖啡机
     coffeeMachine: {
       x: 659,

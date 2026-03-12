@@ -294,6 +294,7 @@ function preload() {
 
   this.load.spritesheet('plants', '/static/plants-spritesheet' + getExt('plants-spritesheet.png'), { frameWidth: 160, frameHeight: 160 });
   this.load.image('posters', '/static/icon' + getExt('icon.png'));
+  this.load.image('waiting_sign', '/static/waiting' + getExt('waiting.png'));
   this.load.spritesheet('coffee_machine', '/static/coffee-machine-spritesheet' + getExt('coffee-machine-spritesheet.png'), { frameWidth: 230, frameHeight: 230 });
   this.load.spritesheet('serverroom', '/static/serverroom-spritesheet' + getExt('serverroom-spritesheet.png'), { frameWidth: 180, frameHeight: 251 });
 
@@ -387,11 +388,17 @@ function create() {
     }));
   }
 
-  // === 海报（来自 LAYOUT，固定显示 icon.png，缩放至原海报 160×160）===
+  // === 海报（来自 LAYOUT）===
   const poster = game.add.image(LAYOUT.furniture.poster.x, LAYOUT.furniture.poster.y, 'posters').setOrigin(0.5);
   poster.setDisplaySize(100, 100);
   poster.setAlpha(0.92);
   poster.setDepth(LAYOUT.furniture.poster.depth);
+
+  // === 休息区墙上「等待区」标牌 ===
+  const waitingSign = game.add.image(LAYOUT.furniture.waitingSign.x, LAYOUT.furniture.waitingSign.y, 'waiting_sign').setOrigin(0.5);
+  waitingSign.setDisplaySize(100, 30);
+  waitingSign.setAlpha(0.92);
+  waitingSign.setDepth(LAYOUT.furniture.waitingSign.depth);
 
   // === 小猫（来自 LAYOUT）===
   const catsFrameCount = 16;
