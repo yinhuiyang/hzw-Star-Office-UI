@@ -88,6 +88,9 @@ RUNTIME_CONFIG_FILE = os.path.join(ROOT_DIR, "runtime-config.json")
 VALID_AGENT_STATES = frozenset({"idle", "writing", "researching", "executing", "resting", "error"})
 # 兼容旧客户端：syncing -> resting
 STATE_ALIASES = {"syncing": "resting"}
+
+# --workspace 启动时传入的 workspace 后缀，用于 officeName 回退
+WORKSPACE_SUFFIX = None
 WORKING_STATES = frozenset({"writing", "researching", "executing"})  # subset used for auto-idle TTL
 STATE_TO_AREA_MAP = {
     "idle": "breakroom",
@@ -1174,9 +1177,11 @@ def leave_agent():
 
 @app.route("/status", methods=["GET"])
 def get_status():
-    """Get current main state (backward compatibility). Optionally include officeName from IDENTITY.md."""
+    """Get current main state (backward compatibility). Optionally include officeName from IDENTITY.md or --workspace."""
     state = load_state()
     office_name = get_office_name_from_identity()
+    if not office_name and WORKSPACE_SUFFIX:
+        office_name = f"{WORKSPACE_SUFFIX}的办公室"
     if office_name:
         state["officeName"] = office_name
     return jsonify(state)
@@ -2112,9 +2117,10 @@ if __name__ == "__main__":
         # workspace-xxxx 与 workspace 同级，均在 ~/.openclaw/ 下
         ws_dir = os.path.join(os.path.expanduser("~"), ".openclaw", f"workspace-{args.workspace}")
         os.environ["OPENCLAW_WORKSPACE"] = ws_dir
-        # 更新模块级变量，供后续使用
+        # 更新模块级变量
         OPENCLAW_WORKSPACE = ws_dir  # noqa: F811
         IDENTITY_FILE = os.path.join(OPENCLAW_WORKSPACE, "IDENTITY.md")
+        WORKSPACE_SUFFIX = args.workspace  # noqa: F811
 
     _workspace_display = f"workspace-{args.workspace}" if args.workspace else None
 
