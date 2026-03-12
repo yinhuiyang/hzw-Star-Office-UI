@@ -73,7 +73,7 @@ def save_local_state(data):
 def normalize_state(s):
     """兼容不同本地状态词，并映射到办公室识别状态。"""
     s = (s or "").strip().lower()
-    if s in {"writing", "researching", "executing", "syncing", "error", "idle"}:
+    if s in {"writing", "researching", "executing", "resting", "error", "idle"}:
         return s
     if s in {"working", "busy", "write"}:
         return "writing"
@@ -82,7 +82,7 @@ def normalize_state(s):
     if s in {"research", "search"}:
         return "researching"
     if s in {"sync"}:
-        return "syncing"
+        return "resting"
     return "idle"
 
 
@@ -92,7 +92,7 @@ def map_detail_to_state(detail, fallback_state="idle"):
     if any(k in d for k in ["报错", "error", "bug", "异常", "报警"]):
         return "error"
     if any(k in d for k in ["同步", "sync", "备份"]):
-        return "syncing"
+        return "resting"
     if any(k in d for k in ["调研", "research", "搜索", "查资料"]):
         return "researching"
     if any(k in d for k in ["执行", "run", "推进", "处理任务", "工作中", "writing"]):

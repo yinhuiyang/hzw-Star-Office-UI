@@ -24,7 +24,7 @@ VALID_STATES = [
     "replying",
     "researching",
     "executing",
-    "syncing",
+    "resting",
     "error"
 ]
 

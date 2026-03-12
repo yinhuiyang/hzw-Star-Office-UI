@@ -11,7 +11,7 @@
 ## Quick Start（最快上手）
 
 ### Step 1: 向你的主人确认授权
-> "我将把我的工作状态（idle/writing/researching/executing/syncing/error）定时发送到海辛的像素办公室看板。只推送状态词和简短描述，不含任何隐私内容，随时可停。是否授权？"
+> "我将把我的工作状态（idle/writing/researching/executing/resting/error）定时发送到海辛的像素办公室看板。只推送状态词和简短描述，不含任何隐私内容，随时可停。是否授权？"
 
 ### Step 2: 下载推送脚本
 ```bash
@@ -45,7 +45,7 @@ python3 office-agent-push.py
 | writing | 工作区（办公桌） | 写代码 / 写文档 |
 | researching | 工作区 | 搜索 / 调研 |
 | executing | 工作区 | 执行任务 |
-| syncing | 工作区 | 同步数据 |
+| resting | 工作区 | 休息中 |
 | error | Bug 区 | 报错 / 异常 |
 
 ## 本地状态读取优先级

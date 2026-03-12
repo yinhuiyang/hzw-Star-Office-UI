@@ -106,9 +106,9 @@
       const STATIC_URL = `${BASE_URL}/static/`;
       let uiLang = 'en';
       const I18N = {
-        zh: { stateIdle: '待命', stateWriting: '整理文档', stateResearching: '搜索信息', stateExecuting: '执行任务', stateSyncing: '同步备份', stateError: '出错了', fallbackIdleDetail: '待命', connecting: '连接中...' },
-        en: { stateIdle: 'Standby', stateWriting: 'Organizing Docs', stateResearching: 'Researching', stateExecuting: 'Executing Tasks', stateSyncing: 'Syncing Backup', stateError: 'Error', fallbackIdleDetail: 'Standby', connecting: 'Connecting...' },
-        ja: { stateIdle: '待機', stateWriting: '文書整理', stateResearching: '情報検索', stateExecuting: 'タスク実行', stateSyncing: '同期バックアップ', stateError: 'エラー発生', fallbackIdleDetail: '待機', connecting: '接続中...' }
+        zh: { stateIdle: '待命', stateWriting: '整理文档', stateResearching: '搜索信息', stateExecuting: '执行任务', stateResting: '休息中', stateError: '出错了', fallbackIdleDetail: '待命', connecting: '连接中...' },
+        en: { stateIdle: 'Standby', stateWriting: 'Organizing Docs', stateResearching: 'Researching', stateExecuting: 'Executing Tasks', stateResting: 'Resting', stateError: 'Error', fallbackIdleDetail: 'Standby', connecting: 'Connecting...' },
+        ja: { stateIdle: '待機', stateWriting: '文書整理', stateResearching: '情報検索', stateExecuting: 'タスク実行', stateResting: '休息中', stateError: 'エラー発生', fallbackIdleDetail: '待機', connecting: '接続中...' }
       };
       const t = (key) => ((I18N[uiLang] && I18N[uiLang][key]) || key);
 
@@ -116,17 +116,17 @@
       const PET_ASSET_PATHS = {
         idle: 'star-idle-v5.png',
         working: 'star-working-spritesheet-grid.webp',
-        syncing: 'sync-animation-v3-grid.webp',
+        resting: 'sync-animation-v3-grid.webp',
         error: 'error-bug-spritesheet-grid.webp'
       };
       const PET_FRAME_CONFIG = {
         idle: { frameW: 256, frameH: 256, fps: 12 },
         working: { frameW: 300, frameH: 300, fps: 12 },
-        syncing: { frameW: 256, frameH: 256, fps: 12 },
+        resting: { frameW: 256, frameH: 256, fps: 12 },
         error: { frameW: 220, frameH: 220, fps: 12 }
       };
       // Align perceived sprite size with main page defaults.
-      const PET_SCALE = { idle: 1.2, working: 1.4, syncing: 1.2, error: 1.2 };
+      const PET_SCALE = { idle: 1.2, working: 1.4, resting: 1.2, error: 1.2 };
 
       let assetRefreshTick = Date.now();
       let lastAssetKey = null;
@@ -146,7 +146,7 @@
       function normalizeState(state) {
         if (!state) return 'idle';
         if (state === 'working' || state === 'writing' || state === 'researching' || state === 'executing') return 'working';
-        if (state === 'sync' || state === 'syncing') return 'syncing';
+        if (state === 'sync' || state === 'resting') return 'resting';
         if (state === 'error') return 'error';
         return 'idle';
       }
@@ -155,7 +155,7 @@
         if (s === 'writing' || s === 'working') return t('stateWriting');
         if (s === 'researching') return t('stateResearching');
         if (s === 'executing' || s === 'run' || s === 'running') return t('stateExecuting');
-        if (s === 'syncing' || s === 'sync') return t('stateSyncing');
+        if (s === 'resting' || s === 'sync') return t('stateResting');
         if (s === 'error') return t('stateError');
         return t('stateIdle');
       }
@@ -172,7 +172,7 @@
         if (stateKey === 'error') {
           return { start: 0, end: Math.min(71, maxIdx) };
         }
-        if (stateKey === 'syncing') {
+        if (stateKey === 'resting') {
           if (totalFrames >= 3) {
             const start = 1;
             const end = Math.max(start, totalFrames - 2);

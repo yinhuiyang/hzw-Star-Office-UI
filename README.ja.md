@@ -75,7 +75,7 @@ python3 set_state.py idle "待機中"
 
 ## 📋 機能一覧
 
-1. **ステータス可視化** —— 6 種類の状態（`idle` / `writing` / `researching` / `executing` / `syncing` / `error`）がオフィスの各エリアに自動マッピングされ、アニメーションと吹き出しでリアルタイム表示
+1. **ステータス可視化** —— 6 種類の状態（`idle` / `writing` / `researching` / `executing` / `resting` / `error`）がオフィスの各エリアに自動マッピングされ、アニメーションと吹き出しでリアルタイム表示
 2. **昨日メモ** —— `memory/*.md` から直近の作業記録を自動取得し、匿名化して「昨日メモ」カードとして表示
 3. **マルチ Agent 協調** —— join key で他の Agent をオフィスに招待し、全員のステータスをリアルタイム確認
 4. **中英日 3 言語対応** —— CN / EN / JP をワンクリック切替、UI テキスト・吹き出し・ローディング表示すべてが連動
@@ -119,7 +119,7 @@ python3 app.py --workspace xxxx
 
 ```bash
 python3 set_state.py writing "ドキュメント整理中"
-python3 set_state.py syncing "進捗同期中"
+python3 set_state.py resting "休息中"
 python3 set_state.py error "問題を検出、調査中"
 python3 set_state.py idle "待機中"
 ```
@@ -164,7 +164,7 @@ python3 scripts/smoke_test.py --base-url http://127.0.0.1:19000
 | `writing` | 💻 ワークエリア（デスク） | コーディング / ドキュメント作成 |
 | `researching` | 💻 ワークエリア | 検索 / リサーチ |
 | `executing` | 💻 ワークエリア | コマンド実行 / タスク処理 |
-| `syncing` | 💻 ワークエリア | データ同期 / プッシュ |
+| `resting` | 💻 ワークエリア | 休息中 |
 | `error` | 🐛 バグコーナー | エラー / デバッグ |
 
 ### 他の Agent をオフィスに招待

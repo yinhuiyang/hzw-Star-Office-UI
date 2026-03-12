@@ -157,11 +157,11 @@
        §4  State definitions
        ================================================================ */
     const SPECIAL = new Set([
-        'writing','receiving','replying','researching','executing','syncing','error'
+        'writing','receiving','replying','researching','executing','resting','error'
     ]);
     const NORM_MAP = {
         working:'writing', run:'executing', running:'executing',
-        sync:'syncing', research:'researching'
+        sync:'resting', research:'researching'
     };
     const BUBBLE = {
         idle:        ['摸鱼中…','有没有新任务？','咖啡真好喝☕','伸个懒腰~'],
@@ -170,12 +170,12 @@
         replying:    ['让我想想…','打字中…','这样回好了💬'],
         researching: ['让我搜一下🔍','找到线索了','再深挖一点'],
         executing:   ['冲鸭！🦆','加油加油','马上搞定⚡'],
-        syncing:     ['备份备份☁️','安全第一','同步中…'],
+        resting:     ['备份备份☁️','安全第一','休息中…'],
         error:       ['啊哦…','出问题了❗','马上修好🔧']
     };
     const EMOJI = {
         idle:'💤', writing:'✏️', receiving:'📨', replying:'💬',
-        researching:'🔍', executing:'⚡', syncing:'☁️', error:'❗'
+        researching:'🔍', executing:'⚡', resting:'☁️', error:'❗'
     };
 
     /* ================================================================
@@ -608,7 +608,7 @@
             replying:   { f: ['cf0','cf0','cf0','cf1'], r: 2 },
             researching:{ f: ['cf0','cf0','cf1','cf0'], r: 1.5 },
             executing:  { f: ['cf0','cf1','cf0','cf1'], r: 4 },
-            syncing:    { f: ['cf0','cf0','cf0','cf1'], r: 1 },
+            resting:    { f: ['cf0','cf0','cf0','cf1'], r: 1 },
             error:      { f: ['cf1','cf0','cf1','cf1'], r: 2 },
         };
         Object.entries(defs).forEach(([k, d]) => {

@@ -75,7 +75,7 @@ You can still deploy and use it. You can:
 
 ## 📋 Features
 
-1. **Status Visualization** — 6 states (`idle` / `writing` / `researching` / `executing` / `syncing` / `error`) mapped to different office areas with animated sprites and speech bubbles
+1. **Status Visualization** — 6 states (`idle` / `writing` / `researching` / `executing` / `resting` / `error`) mapped to different office areas with animated sprites and speech bubbles
 2. **Yesterday Memo** — Automatically reads the latest daily log from `memory/*.md`, sanitizes it, and displays it as a "Yesterday Memo" card
 3. **Multi-Agent Collaboration** — Invite other agents to join your office via join keys and see everyone's status in real time
 4. **Trilingual UI** — Switch between Chinese, English, and Japanese with one click; all UI text, bubbles, and loading messages update instantly
@@ -119,7 +119,7 @@ Open `http://127.0.0.1:19000`
 
 ```bash
 python3 set_state.py writing "Organizing documents"
-python3 set_state.py syncing "Syncing progress"
+python3 set_state.py resting "Resting"
 python3 set_state.py error "Found an issue, debugging"
 python3 set_state.py idle "Standing by"
 ```
@@ -164,7 +164,7 @@ Add the following rule to your `SOUL.md` (or agent config) so your agent updates
 | `writing` | 💻 Workspace (desk) | Writing code or docs |
 | `researching` | 💻 Workspace | Searching / researching |
 | `executing` | 💻 Workspace | Running commands / tasks |
-| `syncing` | 💻 Workspace | Syncing data / pushing |
+| `resting` | 💻 Workspace | Resting |
 | `error` | 🐛 Bug Corner | Error / debugging |
 
 ### Invite Other Agents to Your Office
