@@ -22,7 +22,7 @@
 
 ```text
 请按照这个 SKILL.md 帮我完成 Star Office UI 的部署：
-https://github.com/ringhyacinth/Star-Office-UI/blob/master/SKILL.md
+https://github.com/yinhuiyang/hzw-Star-Office-UI/blob/master/SKILL.md
 ```
 
 龙虾会自动完成 clone、安装依赖、启动后端、配置状态同步，并把访问地址发给你。
@@ -44,7 +44,8 @@ cp state.sample.json state.json
 
 # 4) 启动后端
 cd backend
-python3 app.py
+# xxxx 为当前工作区后缀（如 workspace-shief 则为 shief）
+python3 app.py --workspace xxxx
 ```
 
 打开 **http://127.0.0.1:19000** 然后试试切状态：
@@ -107,7 +108,8 @@ cp state.sample.json state.json
 
 ```bash
 cd backend
-python3 app.py
+# xxxx 为当前工作区后缀（如 workspace-shief 则为 shief）
+python3 app.py --workspace xxxx
 ```
 
 打开 `http://127.0.0.1:19000`

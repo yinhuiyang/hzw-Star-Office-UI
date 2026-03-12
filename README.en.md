@@ -44,7 +44,8 @@ cp state.sample.json state.json
 
 # 4) Start the backend
 cd backend
-python3 app.py
+# xxxx = workspace suffix (e.g. shief for workspace-shief)
+python3 app.py --workspace xxxx
 ```
 
 Open **http://127.0.0.1:19000** and try switching states:
@@ -106,7 +107,8 @@ cp state.sample.json state.json
 
 ```bash
 cd backend
-python3 app.py
+# xxxx = workspace suffix (e.g. shief for workspace-shief)
+python3 app.py --workspace xxxx
 ```
 
 Open `http://127.0.0.1:19000`

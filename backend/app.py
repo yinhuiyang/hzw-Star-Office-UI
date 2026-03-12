@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, send_from_directory, make_response, request, session
 from datetime import datetime, timedelta
 from typing import Optional
+import argparse
 import json
 import os
 import random
@@ -49,7 +50,8 @@ ASSET_ALLOWED_EXTS = {".png", ".webp", ".jpg", ".jpeg", ".gif", ".svg", ".avif"}
 ASSET_TEMPLATE_ZIP = os.path.join(ROOT_DIR, "assets-replace-template.zip")
 WORKSPACE_DIR = os.path.dirname(ROOT_DIR)
 OPENCLAW_WORKSPACE = os.environ.get("OPENCLAW_WORKSPACE") or os.path.join(os.path.expanduser("~"), ".openclaw", "workspace")
-IDENTITY_FILE = os.path.join(OPENCLAW_WORKSPACE, "IDENTITY.md")
+# 当前工作区根目录（含本项目的 workspace 目录）下的 IDENTITY.md
+IDENTITY_FILE = os.path.join(WORKSPACE_DIR, "IDENTITY.md")
 GEMINI_SCRIPT = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", "scripts", "gemini_image_generate.py")
 GEMINI_PYTHON = os.path.join(WORKSPACE_DIR, "skills", "gemini-image-generate", ".venv", "bin", "python")
 ROOM_REFERENCE_IMAGE = (
@@ -2068,6 +2070,25 @@ def assets_upload():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Star Office UI Backend")
+    parser.add_argument(
+        "--workspace",
+        default=None,
+        metavar="NAME",
+        help="Workspace suffix (e.g. shief for workspace-shief)",
+    )
+    args, _ = parser.parse_known_args()
+
+    if args.workspace:
+        # workspace-xxxx 与 workspace 同级，均在 ~/.openclaw/ 下
+        ws_dir = os.path.join(os.path.expanduser("~"), ".openclaw", f"workspace-{args.workspace}")
+        os.environ["OPENCLAW_WORKSPACE"] = ws_dir
+        # 更新模块级变量，供后续使用
+        OPENCLAW_WORKSPACE = ws_dir  # noqa: F811
+        IDENTITY_FILE = os.path.join(OPENCLAW_WORKSPACE, "IDENTITY.md")
+
+    _workspace_display = f"workspace-{args.workspace}" if args.workspace else None
+
     raw_port = os.environ.get("STAR_BACKEND_PORT", "19000")
     try:
         backend_port = int(raw_port)
@@ -2096,6 +2117,8 @@ if __name__ == "__main__":
     print("=" * 50)
     print("Star Office UI - Backend State Service")
     print("=" * 50)
+    if _workspace_display:
+        print(f"Workspace: {_workspace_display}")
     print(f"State file: {STATE_FILE}")
     print(f"Listening on: http://0.0.0.0:{backend_port}")
     if preferred_port != 19000:

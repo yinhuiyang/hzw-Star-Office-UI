@@ -44,7 +44,8 @@ cp state.sample.json state.json
 
 # 4) バックエンドを起動
 cd backend
-python3 app.py
+# xxxx = ワークスペースのサフィックス（例: workspace-shief なら shief）
+python3 app.py --workspace xxxx
 ```
 
 **http://127.0.0.1:19000** を開き、状態を切り替えてみましょう：
@@ -106,7 +107,8 @@ cp state.sample.json state.json
 
 ```bash
 cd backend
-python3 app.py
+# xxxx = ワークスペースのサフィックス（例: workspace-shief なら shief）
+python3 app.py --workspace xxxx
 ```
 
 `http://127.0.0.1:19000` を開く
