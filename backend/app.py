@@ -3,12 +3,14 @@
 
 from flask import Flask, jsonify, send_from_directory, make_response, request, session
 from datetime import datetime, timedelta
+from typing import Optional
 import json
 import os
 import random
 import math
 import re
 import shutil
+import socket
 import subprocess
 import tempfile
 import threading
@@ -468,8 +470,8 @@ def _animated_to_spritesheet(
     out_ext: str = ".webp",
     preserve_original: bool = True,
     pixel_art: bool = True,
-    cols: int | None = None,
-    rows: int | None = None,
+    cols: Optional[int] = None,
+    rows: Optional[int] = None,
 ):
     """Convert animated GIF/WEBP to spritesheet, return (out_path, columns, rows, frames, out_frame_w, out_frame_h)."""
     backend = _ensure_magick_or_ffmpeg_available()
@@ -2074,13 +2076,32 @@ if __name__ == "__main__":
     if backend_port <= 0:
         backend_port = 19000
 
+    # 若首选端口被占用，则依次尝试下一个端口（最多尝试 100 个）
+    def _port_in_use(port: int) -> bool:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("", port))
+                return False
+            except OSError:
+                return True
+
+    preferred_port = backend_port
+    for _ in range(100):
+        if not _port_in_use(backend_port):
+            break
+        backend_port += 1
+    if backend_port != preferred_port:
+        print(f"(Port {preferred_port} in use, using {backend_port} instead)")
+
     print("=" * 50)
     print("Star Office UI - Backend State Service")
     print("=" * 50)
     print(f"State file: {STATE_FILE}")
     print(f"Listening on: http://0.0.0.0:{backend_port}")
-    if backend_port != 19000:
+    if preferred_port != 19000:
         print(f"(Port override: set STAR_BACKEND_PORT to change; current: {raw_port})")
+    elif backend_port != 19000:
+        print("(Port 19000 was in use; set STAR_BACKEND_PORT to force a specific port)")
     else:
         print("(Set STAR_BACKEND_PORT to use a different port, e.g. 3009)")
     mode = "production" if is_production_mode() else "development"
