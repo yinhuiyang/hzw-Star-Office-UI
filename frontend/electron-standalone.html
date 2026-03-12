@@ -1772,6 +1772,7 @@
 
     <script src="/static/vendor/phaser-3.80.1.min.js"></script>
     <script>
+        window.officeNameFromServer = {{SERVER_OFFICE_NAME}};
         // 简易中英文切换
         let uiLang = localStorage.getItem('uiLang') || 'en';
         const OFFICE_PLAQUE_STORAGE_KEY = 'officePlaqueTitle';

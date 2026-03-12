@@ -163,9 +163,13 @@ function spawnBackend(projectRoot) {
   candidates.push("python3");
   candidates.push("python");
 
+  const args = [script];
+  const workspace = process.env.STAR_OFFICE_WORKSPACE;
+  if (workspace) args.push("--workspace", workspace);
+
   for (const bin of candidates) {
     try {
-      const child = spawn(bin, [script], {
+      const child = spawn(bin, args, {
         cwd: projectRoot,
         stdio: "inherit",
       });

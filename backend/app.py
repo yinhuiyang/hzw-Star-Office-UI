@@ -89,8 +89,8 @@ VALID_AGENT_STATES = frozenset({"idle", "writing", "researching", "executing", "
 # 兼容旧客户端：syncing -> resting
 STATE_ALIASES = {"syncing": "resting"}
 
-# --workspace 启动时传入的 workspace 后缀，用于 officeName 回退
-WORKSPACE_SUFFIX = None
+# --workspace 或 STAR_OFFICE_WORKSPACE 环境变量，用于 officeName（优先于 IDENTITY.md）
+WORKSPACE_SUFFIX = os.environ.get("STAR_OFFICE_WORKSPACE")
 WORKING_STATES = frozenset({"writing", "researching", "executing"})  # subset used for auto-idle TTL
 STATE_TO_AREA_MAP = {
     "idle": "breakroom",
@@ -222,6 +222,14 @@ def load_state():
     return state
 
 
+def _get_office_name():
+    """Return office name for injection/API. WORKSPACE_SUFFIX / env overrides IDENTITY."""
+    suffix = WORKSPACE_SUFFIX or os.environ.get("STAR_OFFICE_WORKSPACE")
+    if suffix:
+        return f"{suffix}的办公室"
+    return get_office_name_from_identity()
+
+
 def get_office_name_from_identity():
     """Read office display name from OpenClaw workspace IDENTITY.md (Name field) -> 'XXX的办公室'."""
     if not os.path.isfile(IDENTITY_FILE):
@@ -280,7 +288,11 @@ def index():
     if _INDEX_HTML_CACHE is None:
         with open(FRONTEND_INDEX_FILE, "r", encoding="utf-8") as f:
             raw_html = f.read()
-        _INDEX_HTML_CACHE = raw_html.replace("{{VERSION_TIMESTAMP}}", VERSION_TIMESTAMP)
+        office_name = _get_office_name()
+        office_json = json.dumps(office_name) if office_name else "null"
+        raw_html = raw_html.replace("{{VERSION_TIMESTAMP}}", VERSION_TIMESTAMP)
+        raw_html = raw_html.replace("{{SERVER_OFFICE_NAME}}", office_json)
+        _INDEX_HTML_CACHE = raw_html
 
     resp = make_response(_INDEX_HTML_CACHE)
     resp.headers["Content-Type"] = "text/html; charset=utf-8"
@@ -296,7 +308,10 @@ def electron_standalone_page():
         target = FRONTEND_INDEX_FILE
     with open(target, "r", encoding="utf-8") as f:
         html = f.read()
+    office_name = _get_office_name()
+    office_json = json.dumps(office_name) if office_name else "null"
     html = html.replace("{{VERSION_TIMESTAMP}}", VERSION_TIMESTAMP)
+    html = html.replace("{{SERVER_OFFICE_NAME}}", office_json)
     resp = make_response(html)
     resp.headers["Content-Type"] = "text/html; charset=utf-8"
     return resp
@@ -1177,11 +1192,9 @@ def leave_agent():
 
 @app.route("/status", methods=["GET"])
 def get_status():
-    """Get current main state (backward compatibility). Optionally include officeName from IDENTITY.md or --workspace."""
+    """Get current main state (backward compatibility). Optionally include officeName: --workspace / STAR_OFFICE_WORKSPACE 优先于 IDENTITY.md."""
     state = load_state()
-    office_name = get_office_name_from_identity()
-    if not office_name and WORKSPACE_SUFFIX:
-        office_name = f"{WORKSPACE_SUFFIX}的办公室"
+    office_name = _get_office_name()
     if office_name:
         state["officeName"] = office_name
     return jsonify(state)
@@ -2117,6 +2130,7 @@ if __name__ == "__main__":
         # workspace-xxxx 与 workspace 同级，均在 ~/.openclaw/ 下
         ws_dir = os.path.join(os.path.expanduser("~"), ".openclaw", f"workspace-{args.workspace}")
         os.environ["OPENCLAW_WORKSPACE"] = ws_dir
+        os.environ["STAR_OFFICE_WORKSPACE"] = args.workspace
         # 更新模块级变量
         OPENCLAW_WORKSPACE = ws_dir  # noqa: F811
         IDENTITY_FILE = os.path.join(OPENCLAW_WORKSPACE, "IDENTITY.md")
