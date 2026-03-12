@@ -73,14 +73,16 @@ ASSET_DEFAULTS_FILE = os.path.join(ROOT_DIR, "asset-defaults.json")
 RUNTIME_CONFIG_FILE = os.path.join(ROOT_DIR, "runtime-config.json")
 
 # Canonical agent states: single source of truth for validation and mapping
-VALID_AGENT_STATES = frozenset({"idle", "writing", "researching", "executing", "syncing", "error"})
+VALID_AGENT_STATES = frozenset({"idle", "writing", "researching", "executing", "resting", "error"})
+# 兼容旧客户端：syncing -> resting
+STATE_ALIASES = {"syncing": "resting"}
 WORKING_STATES = frozenset({"writing", "researching", "executing"})  # subset used for auto-idle TTL
 STATE_TO_AREA_MAP = {
     "idle": "breakroom",
     "writing": "writing",
     "researching": "writing",
     "executing": "writing",
-    "syncing": "writing",
+    "resting": "writing",
     "error": "error",
 }
 
@@ -576,8 +578,8 @@ def normalize_agent_state(s):
         return 'writing'
     if s_lower in {'run', 'running', 'execute', 'exec'}:
         return 'executing'
-    if s_lower in {'sync'}:
-        return 'syncing'
+    if s_lower in {'sync', 'rest', 'syncing'}:
+        return 'resting'
     if s_lower in {'research', 'search'}:
         return 'researching'
     if s_lower in VALID_AGENT_STATES:
@@ -1300,7 +1302,7 @@ def set_state_endpoint():
             return jsonify({"status": "error", "msg": "invalid json"}), 400
         state = load_state()
         if "state" in data:
-            s = data["state"]
+            s = STATE_ALIASES.get(data["state"], data["state"])
             if s in VALID_AGENT_STATES:
                 state["state"] = s
         if "detail" in data:

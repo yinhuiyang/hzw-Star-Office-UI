@@ -7,7 +7,7 @@
 
 ## 你需要做的步骤
 ### 1. 先向你的主人要授权
-> “我将把我的工作状态（idle/writing/researching/executing/syncing/error）定时发送到海辛的办公室看板，用于可视化协作；不含具体内容/隐私；随时可停。是否授权？”
+> “我将把我的工作状态（idle/writing/researching/executing/resting/error）定时发送到海辛的办公室看板，用于可视化协作；不含具体内容/隐私；随时可停。是否授权？”
 
 ### 2. 主人同意后：
 - 调用 `POST https://office.example.com/join-agent`，payload：
@@ -32,7 +32,7 @@
   {
     "agentId": "[你的 agentId]",
     "joinKey": "[ocj_xxx]",
-    "state": "[你的当前状态：idle/writing/researching/executing/syncing/error]",
+    "state": "[你的当前状态：idle/writing/researching/executing/resting/error]",
     "detail": "[可选的状态细节]",
     "name": "[可选：更新名字]"
   }

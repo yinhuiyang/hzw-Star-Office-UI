@@ -104,7 +104,7 @@ const STATES = {
   writing: { name: '整理文档', area: 'writing' },
   researching: { name: '搜索信息', area: 'researching' },
   executing: { name: '执行任务', area: 'writing' },
-  syncing: { name: '同步备份', area: 'writing' },
+  resting: { name: '休息中', area: 'writing' },
   error: { name: '出错了', area: 'error' }
 };
 
@@ -151,8 +151,8 @@ const BUBBLE_TEXTS = {
     '让结果自己说话',
     '先做最小可行，再做最美版本'
   ],
-  syncing: [
-    '同步中：把今天锁进云里',
+  resting: [
+    '休息中：把今天锁进云里',
     '备份不是仪式，是安全感',
     '写入中…别断电',
     '把变更交给时间戳',
@@ -293,7 +293,7 @@ function preload() {
   this.load.spritesheet('sofa_busy', '/static/sofa-busy-spritesheet' + getExt('sofa-busy-spritesheet.png'), { frameWidth: 256, frameHeight: 256 });
 
   this.load.spritesheet('plants', '/static/plants-spritesheet' + getExt('plants-spritesheet.png'), { frameWidth: 160, frameHeight: 160 });
-  this.load.spritesheet('posters', '/static/posters-spritesheet' + getExt('posters-spritesheet.png'), { frameWidth: 160, frameHeight: 160 });
+  this.load.image('posters', '/static/icon' + getExt('icon.png'));
   this.load.spritesheet('coffee_machine', '/static/coffee-machine-spritesheet' + getExt('coffee-machine-spritesheet.png'), { frameWidth: 230, frameHeight: 230 });
   this.load.spritesheet('serverroom', '/static/serverroom-spritesheet' + getExt('serverroom-spritesheet.png'), { frameWidth: 180, frameHeight: 251 });
 
@@ -387,18 +387,11 @@ function create() {
     }));
   }
 
-  // === 海报（来自 LAYOUT）===
-  const postersFrameCount = 32;
-  const randomPosterFrame = Math.floor(Math.random() * postersFrameCount);
-  const poster = game.add.sprite(LAYOUT.furniture.poster.x, LAYOUT.furniture.poster.y, 'posters', randomPosterFrame).setOrigin(0.5);
+  // === 海报（来自 LAYOUT，固定显示 icon.png，缩放至原海报 160×160）===
+  const poster = game.add.image(LAYOUT.furniture.poster.x, LAYOUT.furniture.poster.y, 'posters').setOrigin(0.5);
+  poster.setDisplaySize(100, 100);
+  poster.setAlpha(0.92);
   poster.setDepth(LAYOUT.furniture.poster.depth);
-  poster.setInteractive({ useHandCursor: true });
-  window.posterSprite = poster;
-  window.posterFrameCount = postersFrameCount;
-  poster.on('pointerdown', () => {
-    const next = Math.floor(Math.random() * window.posterFrameCount);
-    window.posterSprite.setFrame(next);
-  });
 
   // === 小猫（来自 LAYOUT）===
   const catsFrameCount = 16;
@@ -631,7 +624,7 @@ function update(time) {
   }
 
   if (syncAnimSprite) {
-    if (effectiveStateForServer === 'syncing') {
+    if (effectiveStateForServer === 'resting') {
       if (!syncAnimSprite.anims.isPlaying || syncAnimSprite.anims.currentAnim?.key !== 'sync_anim') {
         syncAnimSprite.anims.play('sync_anim', true);
       }
@@ -664,7 +657,7 @@ function normalizeState(s) {
   if (!s) return 'idle';
   if (s === 'working') return 'writing';
   if (s === 'run' || s === 'running') return 'executing';
-  if (s === 'sync') return 'syncing';
+  if (s === 'sync' || s === 'rest' || s === 'syncing') return 'resting';
   if (s === 'research') return 'researching';
   return s;
 }
@@ -705,7 +698,7 @@ function fetchStatus() {
             window.starWorking.setVisible(false);
             window.starWorking.anims.stop();
           }
-        } else if (nextState === 'syncing') {
+        } else if (nextState === 'resting') {
           sofa.anims.stop();
           sofa.setTexture('sofa_idle');
           star.setVisible(false);
@@ -735,7 +728,7 @@ function fetchStatus() {
         }
 
         if (syncAnimSprite) {
-          if (nextState === 'syncing') {
+          if (nextState === 'resting') {
             if (!syncAnimSprite.anims.isPlaying || syncAnimSprite.anims.currentAnim?.key !== 'sync_anim') {
               syncAnimSprite.anims.play('sync_anim', true);
             }
@@ -844,7 +837,7 @@ function showBubble() {
 
   let anchorX = star.x;
   let anchorY = star.y;
-  if (currentState === 'syncing' && syncAnimSprite && syncAnimSprite.visible) {
+  if (currentState === 'resting' && syncAnimSprite && syncAnimSprite.visible) {
     anchorX = syncAnimSprite.x;
     anchorY = syncAnimSprite.y;
   } else if (currentState === 'error' && window.errorBug && window.errorBug.visible) {

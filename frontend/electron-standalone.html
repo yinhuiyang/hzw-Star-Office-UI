@@ -962,7 +962,7 @@
         /* Star 状态四按钮（不含装修）使用像素精灵皮肤 */
         #control-bar #btn-state-idle,
         #control-bar #btn-state-writing,
-        #control-bar #btn-state-syncing,
+        #control-bar #btn-state-resting,
         #control-bar #btn-state-error {
             background-image: url('/static/btn-state-sprite.png?v={{VERSION_TIMESTAMP}}');
             background-color: transparent !important;
@@ -983,14 +983,14 @@
         }
         #control-bar #btn-state-idle:hover,
         #control-bar #btn-state-writing:hover,
-        #control-bar #btn-state-syncing:hover,
+        #control-bar #btn-state-resting:hover,
         #control-bar #btn-state-error:hover {
             background-color: transparent !important;
             filter: brightness(1.04);
         }
         #control-bar #btn-state-idle:active,
         #control-bar #btn-state-writing:active,
-        #control-bar #btn-state-syncing:active,
+        #control-bar #btn-state-resting:active,
         #control-bar #btn-state-error:active {
             background-position: 50% 0;
             padding-top: 5px;
@@ -1000,7 +1000,7 @@
         /* Desktop shell: keep 2x2 buttons centered and pressed-state offset visible */
         body.desktop-shell #control-bar #btn-state-idle,
         body.desktop-shell #control-bar #btn-state-writing,
-        body.desktop-shell #control-bar #btn-state-syncing,
+        body.desktop-shell #control-bar #btn-state-resting,
         body.desktop-shell #control-bar #btn-state-error {
             display: flex;
             align-items: center;
@@ -1012,7 +1012,7 @@
         }
         body.desktop-shell #control-bar #btn-state-idle:active,
         body.desktop-shell #control-bar #btn-state-writing:active,
-        body.desktop-shell #control-bar #btn-state-syncing:active,
+        body.desktop-shell #control-bar #btn-state-resting:active,
         body.desktop-shell #control-bar #btn-state-error:active {
             padding-top: 5px !important;
             padding-bottom: 3px !important;
@@ -1636,7 +1636,7 @@
             <div id="control-buttons">
                 <button id="btn-state-idle" onclick="setState('idle', getStateDetailByState('idle'))">待命</button>
                 <button id="btn-state-writing" onclick="setState('writing', getStateDetailByState('writing'))">工作</button>
-                <button id="btn-state-syncing" onclick="setState('syncing', getStateDetailByState('syncing'))">同步</button>
+                <button id="btn-state-resting" onclick="setState('resting', getStateDetailByState('resting'))">休息</button>
                 <button id="btn-state-error" onclick="setState('error', getStateDetailByState('error'))">报警</button>
                 <button id="btn-open-drawer" onclick="openAssetWindowFromMain()">装修房间</button>
             </div>
@@ -1770,7 +1770,7 @@
         const I18N = {
             zh: {
                 controlTitle: 'Star 状态',
-                btnIdle: '待命', btnWork: '工作', btnSync: '同步', btnError: '报警', btnDecor: '装修房间',
+                btnIdle: '待命', btnWork: '工作', btnRest: '休息', btnError: '报警', btnDecor: '装修房间',
                 drawerTitle: '装修房间 · 资产侧边栏', drawerClose: '关闭',
                 authTitle: '请输入装修验证码', authPlaceholder: '输入验证码', authVerify: '验证', authDefaultPassHint: '默认密码：1234（可随时让我帮你改，建议改成强密码）',
                 drawerVisibilityTip: '可见性：点击条目右侧眼睛按钮切换该资产显示',
@@ -1798,13 +1798,13 @@
                 panelExpand: '展开', panelCollapse: '收起',
                 hiddenTag: '已隐藏', assetListLoaded: '已加载资产', sceneCaptured: '场景抓取', assetListLoadFailed: '资产加载失败，请点“刷新”重试',
                 authNeedInput: '请输入验证码', authPassOk: '验证通过', authPassWrong: '验证码错误',
-                stateDetailIdle: '待命', stateDetailWriting: '整理文档', stateDetailResearching: '搜索信息', stateDetailExecuting: '执行任务', stateDetailSyncing: '同步备份', stateDetailError: '出错了',
-                stateLabelIdle: '待命', stateLabelWriting: '整理文档', stateLabelResearching: '搜索信息', stateLabelExecuting: '执行任务', stateLabelSyncing: '同步备份', stateLabelError: '出错了',
+                stateDetailIdle: '待命', stateDetailWriting: '整理文档', stateDetailResearching: '搜索信息', stateDetailExecuting: '执行任务', stateDetailResting: '休息中', stateDetailError: '出错了',
+                stateLabelIdle: '待命', stateLabelWriting: '整理文档', stateLabelResearching: '搜索信息', stateLabelExecuting: '执行任务', stateLabelResting: '休息中', stateLabelError: '出错了',
                 statusBrokerDecorating: '正在处理中介装修方案', statusMovingHome: '正在搬新家', statusRestoreHome: '正在回老家', statusRestoreLastBg: '正在回退到上一次背景', statusApplyFavorite: '正在替换收藏地图'
             },
             en: {
                 controlTitle: 'Star Status',
-                btnIdle: 'Idle', btnWork: 'Work', btnSync: 'Sync', btnError: 'Alert', btnDecor: 'Decorate Room',
+                btnIdle: 'Idle', btnWork: 'Work', btnRest: 'Rest', btnError: 'Alert', btnDecor: 'Decorate Room',
                 drawerTitle: 'Decorate Room · Asset Sidebar', drawerClose: 'Close',
                 authTitle: 'Enter Decor Passcode', authPlaceholder: 'Enter passcode', authVerify: 'Verify', authDefaultPassHint: 'Default passcode: 1234 (ask me anytime to change it; stronger passcode recommended)',
                 drawerVisibilityTip: 'Visibility: use the eye button on each row to hide/show that asset',
@@ -1832,13 +1832,13 @@
                 panelExpand: 'Expand', panelCollapse: 'Collapse',
                 hiddenTag: 'Hidden', assetListLoaded: 'Assets loaded', sceneCaptured: 'Scene captured', assetListLoadFailed: 'Failed to load assets. Click Refresh and retry',
                 authNeedInput: 'Please enter passcode', authPassOk: 'Passcode verified', authPassWrong: 'Wrong passcode',
-                stateDetailIdle: 'Standby', stateDetailWriting: 'Organizing Docs', stateDetailResearching: 'Researching', stateDetailExecuting: 'Executing Tasks', stateDetailSyncing: 'Syncing Backup', stateDetailError: 'Error',
-                stateLabelIdle: 'Standby', stateLabelWriting: 'Organizing Docs', stateLabelResearching: 'Researching', stateLabelExecuting: 'Executing Tasks', stateLabelSyncing: 'Syncing Backup', stateLabelError: 'Error',
+                stateDetailIdle: 'Standby', stateDetailWriting: 'Organizing Docs', stateDetailResearching: 'Researching', stateDetailExecuting: 'Executing Tasks', stateDetailResting: 'Resting', stateDetailError: 'Error',
+                stateLabelIdle: 'Standby', stateLabelWriting: 'Organizing Docs', stateLabelResearching: 'Researching', stateLabelExecuting: 'Executing Tasks', stateLabelResting: 'Resting', stateLabelError: 'Error',
                 statusBrokerDecorating: 'Applying broker decoration plan', statusMovingHome: 'Moving to a new home', statusRestoreHome: 'Restoring home background', statusRestoreLastBg: 'Restoring previous generated background', statusApplyFavorite: 'Applying favorite map'
             },
             ja: {
                 controlTitle: 'Star ステータス',
-                btnIdle: '待機', btnWork: '作業', btnSync: '同期', btnError: '警報', btnDecor: '部屋を編集',
+                btnIdle: '待機', btnWork: '作業', btnRest: '休息', btnError: '警報', btnDecor: '部屋を編集',
                 drawerTitle: '部屋編集・アセットサイドバー', drawerClose: '閉じる',
                 authTitle: '編集パスコードを入力', authPlaceholder: 'パスコード入力', authVerify: '認証', authDefaultPassHint: '初期パスコード：1234（いつでも変更を相談可。強固なパス推奨）',
                 drawerVisibilityTip: '表示切替：各行右側の目ボタンで資産を表示/非表示',
@@ -1866,8 +1866,8 @@
                 panelExpand: '展開', panelCollapse: '折りたたむ',
                 hiddenTag: '非表示', assetListLoaded: 'アセット読み込み', sceneCaptured: 'シーン取得', assetListLoadFailed: 'アセット読み込み失敗。更新して再試行してください',
                 authNeedInput: 'パスコードを入力してください', authPassOk: '認証に成功しました', authPassWrong: 'パスコードが正しくありません',
-                stateDetailIdle: '待機', stateDetailWriting: '文書整理', stateDetailResearching: '情報検索', stateDetailExecuting: 'タスク実行', stateDetailSyncing: '同期バックアップ', stateDetailError: 'エラー発生',
-                stateLabelIdle: '待機', stateLabelWriting: '文書整理', stateLabelResearching: '情報検索', stateLabelExecuting: 'タスク実行', stateLabelSyncing: '同期バックアップ', stateLabelError: 'エラー発生',
+                stateDetailIdle: '待機', stateDetailWriting: '文書整理', stateDetailResearching: '情報検索', stateDetailExecuting: 'タスク実行', stateDetailResting: '休息中', stateDetailError: 'エラー発生',
+                stateLabelIdle: '待機', stateLabelWriting: '文書整理', stateLabelResearching: '情報検索', stateLabelExecuting: 'タスク実行', stateLabelResting: '休息中', stateLabelError: 'エラー発生',
                 statusBrokerDecorating: '仲介の装飾プランを処理中', statusMovingHome: '引っ越し中', statusRestoreHome: 'ホーム背景を復元中', statusRestoreLastBg: '前回背景へ復元中', statusApplyFavorite: '保存したマップを適用中'
             }
         };
@@ -1946,14 +1946,14 @@
                 writing: 'stateDetailWriting',
                 researching: 'stateDetailResearching',
                 executing: 'stateDetailExecuting',
-                syncing: 'stateDetailSyncing',
+                resting: 'stateDetailResting',
                 error: 'stateDetailError'
             };
             return t(keyMap[state] || 'stateDetailIdle');
         }
 
         function getStateLabelByState(state) {
-            if (state === 'syncing') return t('stateLabelSyncing');
+            if (state === 'resting') return t('stateLabelResting');
             if (state === 'error') return t('stateLabelError');
             if (state === 'researching') return t('stateLabelResearching');
             if (state === 'executing') return t('stateLabelExecuting');
@@ -1982,7 +1982,7 @@
             setText('control-bar-title', 'controlTitle');
             setText('btn-state-idle', 'btnIdle');
             setText('btn-state-writing', 'btnWork');
-            setText('btn-state-syncing', 'btnSync');
+            setText('btn-state-resting', 'btnRest');
             setText('btn-state-error', 'btnError');
             setText('btn-open-drawer', 'btnDecor');
             const langButtons = [
@@ -2426,7 +2426,7 @@
             writing: { name: '整理文档', area: 'writing' },
             researching: { name: '搜索信息', area: 'researching' },
             executing: { name: '执行任务', area: 'writing' },
-            syncing: { name: '同步备份', area: 'writing' },
+            resting: { name: '休息中', area: 'writing' },
             error: { name: '出错了', area: 'error' }
         };
 
@@ -2436,7 +2436,7 @@
                 writing: ['进入专注模式：勿扰','先把关键路径跑通','我来把复杂变简单','把 bug 关进笼子里','写到一半，先保存','把每一步都做成可回滚','今天的进度，明天的底气','先收敛，再发散','让系统变得更可解释','稳住，我们能赢'],
                 researching: ['我在挖证据链','让我把信息熬成结论','找到了：关键在这里','先把变量控制住','我在查：它为什么会这样','把直觉写成验证','先定位，再优化','别急，先画因果图'],
                 executing: ['执行中：不要眨眼','把任务切成小块逐个击破','开始跑 pipeline','一键推进：走你','让结果自己说话','先做最小可行，再做最美版本'],
-                syncing: ['同步中：把今天锁进云里','备份不是仪式，是安全感','写入中…别断电','把变更交给时间戳','云端对齐：咔哒','同步完成前先别乱动','把未来的自己从灾难里救出来','多一份备份，少一份后悔'],
+                resting: ['休息中：把今天锁进云里','备份不是仪式，是安全感','写入中…别断电','把变更交给时间戳','云端对齐：咔哒','同步完成前先别乱动','把未来的自己从灾难里救出来','多一份备份，少一份后悔'],
                 error: ['警报响了：先别慌','我闻到 bug 的味道了','先复现，再谈修复','把日志给我，我会说人话','错误不是敌人，是线索','把影响面圈起来','先止血，再手术','我在：马上定位根因','别怕，这种我见多了','报警中：让问题自己现形'],
                 cat: ['喵~','咕噜咕噜…','尾巴摇一摇','晒太阳最开心','有人来看我啦','我是这个办公室的吉祥物','伸个懒腰','今天的罐罐准备好了吗','呼噜呼噜','这个位置视野最好']
             },
@@ -2445,7 +2445,7 @@
                 writing: ['Focus mode on: do not disturb.','Let’s clear the critical path first.','I’ll make the complex simple.','Putting bugs in a cage.','Save first, then continue.','Every step should be rollback-safe.','Today’s progress is tomorrow’s confidence.','Converge first, then diverge.','Making the system more explainable.','Steady—this is winnable.'],
                 researching: ['Digging the evidence chain.','Let me boil info into conclusions.','Found it: key clue here.','Control variables first.','Checking why this happens.','Turn intuition into verification.','Locate first, optimize next.','No rush—draw the causality map first.'],
                 executing: ['Executing—don’t blink.','Split tasks, conquer one by one.','Pipeline is running.','One-click push: go go.','Let the results speak.','Build MVP first, then craft beauty.'],
-                syncing: ['Syncing: lock today into the cloud.','Backup is safety, not ceremony.','Writing… don’t cut power.','Handing changes to timestamps.','Cloud alignment: click.','Don’t shake it before sync finishes.','Saving future-us from disasters.','One more backup, one less regret.'],
+                resting: ['Resting: lock today into the cloud.','Backup is safety, not ceremony.','Writing… don’t cut power.','Handing changes to timestamps.','Cloud alignment: click.','Don’t shake it before sync finishes.','Saving future-us from disasters.','One more backup, one less regret.'],
                 error: ['Alarm on—stay calm.','I can smell a bug.','Reproduce first, then fix.','Give me logs; I’ll translate.','Errors are clues, not enemies.','Circle the impact area first.','Stop the bleeding, then surgery.','On it: tracing root cause now.','Don’t worry, seen this many times.','Alert mode: make the issue reveal itself.'],
                 cat: ['Meow~','Purr purr…','Tail wiggle activated.','Sunbathing is the best.','Someone came to see me!','I’m the office mascot.','Big stretch~','Is today’s snack ready yet?','Rrrrr purr…','Best view spot secured.']
             },
@@ -2454,7 +2454,7 @@
                 writing: ['集中モード：お静かに。','まずはクリティカルパスを通す。','複雑をシンプルにする。','バグはケージへ。','途中でもまず保存。','すべてをロールバック可能に。','今日の進捗は明日の自信。','まず収束、次に発散。','システムをより説明可能に。','落ち着いて、勝てる。'],
                 researching: ['証拠チェーンを掘っています。','情報を結論まで煮詰めます。','見つけた：鍵はここ。','まず変数を制御。','なぜこうなるか調査中。','直感を検証へ。','先に特定、次に最適化。','急がず因果マップから。'],
                 executing: ['実行中：まばたき厳禁。','タスクを分割して各個撃破。','パイプライン起動。','ワンクリック前進：いくぞ。','結果に語らせる。','まず最小実用、次に美しさ。'],
-                syncing: ['同期中：今日をクラウドに封印。','バックアップは儀式じゃなく安心。','書き込み中…電源オフ厳禁。','変更はタイムスタンプへ。','クラウド整列：カチッ。','同期完了まで触らないで。','未来の自分を災害から救う。','バックアップ一つ、後悔一つ減る。'],
+                resting: ['休息中：今日をクラウドに封印。','バックアップは儀式じゃなく安心。','書き込み中…電源オフ厳禁。','変更はタイムスタンプへ。','クラウド整列：カチッ。','同期完了まで触らないで。','未来の自分を災害から救う。','バックアップ一つ、後悔一つ減る。'],
                 error: ['警報：まず落ち着いて。','バグの気配を感じる。','再現してから修正へ。','ログをください、人語にします。','エラーは敵ではなく手がかり。','まず影響範囲を囲う。','止血してから手術。','今すぐ根因を追跡中。','大丈夫、よくある案件。','警戒モード：問題を可視化する。'],
                 cat: ['ニャー','ゴロゴロ…','しっぽフリフリ。','ひなたぼっこ最高。','見に来てくれた！','このオフィスのマスコットです。','ぐーっと伸び。','今日のおやつ、準備できた？','ゴロゴロ。','ここ、いちばん見晴らしがいい。']
             }
@@ -2859,7 +2859,7 @@
                 sofa_idle: 'sofa-idle-v3',
                 sofa_shadow: 'sofa-shadow-v1',
                 plants: 'plants-spritesheet',
-                posters: 'posters-spritesheet',
+                posters: 'icon',
                 coffee_machine: 'coffee-machine-v3-grid',
                 coffee_machine_shadow: 'coffee-machine-shadow-v1',
                 serverroom: 'serverroom-spritesheet',
@@ -4355,7 +4355,7 @@ function toggleBrokerPanel() {
                     writing: '工作',
                     researching: '调研',
                     executing: '执行',
-                    syncing: '同步',
+                    resting: '休息',
                     error: '报警'
                 };
 
@@ -4587,7 +4587,7 @@ function toggleBrokerPanel() {
                 writing: ['我在工作区处理任务', '正在整理文档与执行中', '工作区专注推进中'],
                 researching: ['我在调研模式，搜集信息', '正在查资料和验证线索', '研究中，稍后同步结论'],
                 executing: ['执行中，正在跑流程', '我在工作区推进任务', '正在把计划落地执行'],
-                syncing: ['同步中，马上更新状态', '正在同步进度到系统', '数据同步中请稍候'],
+                resting: ['休息中，马上更新状态', '正在同步进度到系统', '数据同步中请稍候'],
                 error: ['我在 bug 区排查问题', '检测到异常，正在修复', '报警中，先定位再处理']
             };
             const agentState = (guestAgents.find(a => a.agentId === id) || {}).state || 'idle';
@@ -4633,14 +4633,14 @@ function toggleBrokerPanel() {
             if (now < window.__demoNextAt) return;
             window.__demoNextAt = now + 8000;
 
-            const states = ['idle', 'writing', 'researching', 'executing', 'syncing', 'error'];
+            const states = ['idle', 'writing', 'researching', 'executing', 'resting', 'error'];
             const bubbleTextMapByLang = {
                 zh: {
                 idle: '我去休息区躺一下',
                 writing: '我在工作中',
                 researching: '我在调研中',
                 executing: '我在执行任务',
-                syncing: '我在同步状态',
+                resting: '我在休息状态',
                 error: '出错了！我去报警区'
                 },
                 en: {
@@ -4648,7 +4648,7 @@ function toggleBrokerPanel() {
                     writing: 'I am working now.',
                     researching: 'I am researching now.',
                     executing: 'I am executing tasks.',
-                    syncing: 'I am syncing status.',
+                    resting: 'I am resting.',
                     error: 'Something broke! Heading to alert zone.'
                 },
                 ja: {
@@ -4656,7 +4656,7 @@ function toggleBrokerPanel() {
                     writing: '作業中です。',
                     researching: '調査中です。',
                     executing: 'タスクを実行中です。',
-                    syncing: '状態を同期中です。',
+                    resting: '休息中です。',
                     error: 'エラー発生！アラートエリアへ。'
                 }
             };
@@ -4879,7 +4879,7 @@ function toggleBrokerPanel() {
 
             // Decor
             this.load.spritesheet('plants', '/static/plants-spritesheet.webp?v={{VERSION_TIMESTAMP}}', { frameWidth: 160, frameHeight: 160 });
-            this.load.spritesheet('posters', '/static/posters-spritesheet.webp?v={{VERSION_TIMESTAMP}}', { frameWidth: 160, frameHeight: 160 });
+            this.load.image('posters', '/static/icon.png?v={{VERSION_TIMESTAMP}}');
             this.load.spritesheet('coffee_machine', '/static/coffee-machine-v3-grid.webp?v={{VERSION_TIMESTAMP}}', { frameWidth: 230, frameHeight: 230 });
             this.load.image('coffee_machine_shadow', '/static/coffee-machine-shadow-v1.png?v={{VERSION_TIMESTAMP}}');
             this.load.spritesheet('serverroom', '/static/serverroom-spritesheet.webp?v={{VERSION_TIMESTAMP}}', { frameWidth: 180, frameHeight: 251 });
@@ -5018,20 +5018,11 @@ function toggleBrokerPanel() {
                 window.plantSprite3.setFrame(next);
             });
 
-            // Random poster at (252,66) (random frame from spritesheet)
-            const postersFrameCount = (this.textures.get('posters')?.frameTotal || 1) - 1;
-            const randomPosterFrame = Math.floor(Math.random() * Math.max(1, postersFrameCount));
-            const poster = game.add.sprite(252, 66, 'posters', randomPosterFrame).setOrigin(0.5);
+            // 墙上海报固定显示 icon.png，缩放至原海报尺寸 160×160
+            const poster = game.add.image(252, 66, 'posters').setOrigin(0.5);
+            poster.setDisplaySize(100, 100);
+            poster.setAlpha(0.92);
             poster.setDepth(4);
-            poster.setInteractive({ useHandCursor: true });
-            // Expose to global for click handler
-            window.posterSprite = poster;
-            window.posterFrameCount = postersFrameCount;
-            
-            poster.on('pointerdown', () => {
-                const next = Math.floor(Math.random() * window.posterFrameCount);
-                window.posterSprite.setFrame(next);
-            });
 
             // Random cat at (94,557)
             const catsFrameCount = (this.textures.get('cats')?.frameTotal || 1) - 1;
@@ -5399,7 +5390,7 @@ function toggleBrokerPanel() {
 
             // Sync animation fallback logic
             if (syncAnimSprite) {
-                if (effectiveStateForServer === 'syncing') {
+                if (effectiveStateForServer === 'resting') {
                     if (syncAnimPlayable && syncAnimSprite.anims && syncAnimSprite.anims.play && syncAnimSprite.scene?.anims?.exists('sync_anim')) {
                     if (!syncAnimSprite.anims.isPlaying || syncAnimSprite.anims.currentAnim?.key !== 'sync_anim') {
                         syncAnimSprite.anims.play('sync_anim', true);
@@ -5464,7 +5455,7 @@ function toggleBrokerPanel() {
             if (!s) return 'idle';
             if (s === 'working') return 'writing';
             if (s === 'run' || s === 'running') return 'executing';
-            if (s === 'sync') return 'syncing';
+            if (s === 'sync' || s === 'rest' || s === 'syncing') return 'resting';
             if (s === 'research') return 'researching';
             return s;
         }
@@ -5516,7 +5507,7 @@ function toggleBrokerPanel() {
                                 window.starWorking.setVisible(false);
                                 window.starWorking.anims.stop();
                             }
-                        } else if (nextState === 'syncing') {
+                        } else if (nextState === 'resting') {
                             // Syncing: also no working animation at desk
                             sofa.anims.stop();
                             sofa.setTexture('sofa_idle');
@@ -5553,7 +5544,7 @@ function toggleBrokerPanel() {
                         // default: frame 0
                         // state=syncing: play from frame 1
                         if (syncAnimSprite) {
-                            if (nextState === 'syncing') {
+                            if (nextState === 'resting') {
                                     if (syncAnimPlayable && syncAnimSprite.anims && syncAnimSprite.anims.play && syncAnimSprite.scene?.anims?.exists('sync_anim')) {
                                 if (!syncAnimSprite.anims.isPlaying || syncAnimSprite.anims.currentAnim?.key !== 'sync_anim') {
                                     syncAnimSprite.anims.play('sync_anim', true);
@@ -5716,7 +5707,7 @@ function toggleBrokerPanel() {
             // - other: star
             let anchorX = star.x;
             let anchorY = star.y;
-            if (currentState === 'syncing' && syncAnimSprite && syncAnimSprite.visible) {
+            if (currentState === 'resting' && syncAnimSprite && syncAnimSprite.visible) {
                 anchorX = syncAnimSprite.x;
                 anchorY = syncAnimSprite.y;
             } else if (currentState === 'error' && window.errorBug && window.errorBug.visible) {

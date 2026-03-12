@@ -76,7 +76,7 @@ python3 set_state.py idle "待命中"
 
 ## 📋 功能一览
 
-1. **状态可视化** —— 6 种状态（`idle` / `writing` / `researching` / `executing` / `syncing` / `error`）自动映射到办公室不同区域，动画 + 气泡实时展示
+1. **状态可视化** —— 6 种状态（`idle` / `writing` / `researching` / `executing` / `resting` / `error`）自动映射到办公室不同区域，动画 + 气泡实时展示
 2. **昨日小记** —— 自动从 `memory/*.md` 读取最近一天的工作记录，脱敏后展示为"昨日小记"卡片
 3. **多 Agent 协作** —— 通过 join key 邀请其他 Agent 加入你的办公室，实时查看多人状态
 4. **中英日三语** —— CN / EN / JP 一键切换，界面文案、气泡、加载提示全部联动
@@ -120,7 +120,7 @@ python3 app.py --workspace xxxx
 
 ```bash
 python3 set_state.py writing "正在整理文档"
-python3 set_state.py syncing "同步进度中"
+python3 set_state.py resting "休息中"
 python3 set_state.py error "发现问题，排查中"
 python3 set_state.py idle "待命中"
 ```
@@ -165,7 +165,7 @@ python3 scripts/smoke_test.py --base-url http://127.0.0.1:19000
 | `writing` | 💻 工作区（办公桌） | 写代码 / 写文档 |
 | `researching` | 💻 工作区 | 搜索 / 调研 |
 | `executing` | 💻 工作区 | 执行命令 / 跑任务 |
-| `syncing` | 💻 工作区 | 同步数据 / 推送 |
+| `resting` | 💻 工作区 | 休息中 |
 | `error` | 🐛 Bug 区 | 报错 / 异常排查 |
 
 ### 邀请其他 Agent 加入办公室
