@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star 的像素办公室</title>
+    <title>办公室</title>
     <style>
         @font-face {
             font-family: 'ArkPixel';
@@ -1142,8 +1142,8 @@
     
     <div id="main-stage">
         <div id="game-container">
-            <div id="game-skeleton"><div class="hint">正在进入像素办公室…</div></div>
-            <div id="status-text">加载中...</div>
+            <div id="game-skeleton"><div class="hint">正在进入办公室…</div></div>
+            <div id="status-text">等待分配任务</div>
         </div>
     
     <!-- 底部面板容器 -->
@@ -1304,7 +1304,7 @@
         let uiLang = localStorage.getItem('uiLang') || 'zh';
         const I18N = {
             zh: {
-                controlTitle: 'Star 状态',
+                controlTitle: '状态',
                 btnIdle: '待命', btnWork: '工作', btnRest: '休息', btnError: '报警', btnDecor: '装修房间',
                 drawerTitle: '装修房间 · 资产侧边栏', drawerClose: '关闭',
                 authTitle: '请输入装修验证码', authPlaceholder: '输入验证码', authVerify: '验证', authDefaultPassHint: '默认密码：1234（可随时让我帮你改，建议改成强密码）',
@@ -1329,7 +1329,7 @@
                 assetHintDefault: '通用素材：建议保持原图尺寸、透明通道与视觉重心一致，避免错位或失真',
                 showCoords: '显示坐标', hideCoords: '隐藏坐标', moveView: '移动视野', lockView: '锁定视野',
                 memoTitle: '昨 日 小 记', guestTitle: '访 客 列 表', officeTitle: '办公室',
-                loadingOffice: '正在加载 Star 的像素办公室...'
+                loadingOffice: '正在加载办公室...'
             },
             en: {
                 controlTitle: 'Star Status',
