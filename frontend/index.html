@@ -27,9 +27,9 @@
         /* 底部面板容器 */
         #main-stage {
             position: relative;
-            width: 1280px;
+            width: 100%;
             transition: transform .25s ease;
-            will-change: transform;
+            /* will-change: transform; */
         }
         body.drawer-open #main-stage {
             /* 与右侧抽屉并列：按视口动态左移，确保与抽屉至少保留 20px 间隔 */
@@ -47,12 +47,13 @@
             position: relative;
             border: 0;
             image-rendering: pixelated;
-            width: 1280px;
-            height: 720px;
+            width: 77vw;
+            height: 90vh;
             max-width: none;
             max-height: none;
             aspect-ratio: auto;
             overflow: hidden;
+            margin: auto;
         }
         #game-container canvas {
             width: 100% !important;
@@ -4173,7 +4174,7 @@ function toggleBrokerPanel() {
 
             // 墙上海报固定显示 icon.png，缩放至原海报尺寸 160×160
             const poster = game.add.image(252, 66, 'posters').setOrigin(0.5);
-            poster.setDisplaySize(100, 100);
+            poster.setDisplaySize(80, 80);
             poster.setAlpha(0.92);
             poster.setDepth(4);
 
